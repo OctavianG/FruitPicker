@@ -1,8 +1,12 @@
 package videogame.scenes;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import jdk.jfr.internal.consumer.EventLog;
+import videogame.FruitPicker;
 
 public class WelcomeScene extends GeneralScene {
 
@@ -23,13 +27,36 @@ public class WelcomeScene extends GeneralScene {
         myFont = Font.font("Arial", FontWeight.NORMAL, 20);
         gc.setFont(myFont);
         gc.setFill(Color.WHITE);
-        gc.fillText("Press Spacebar to play", 325, 275);
+        gc.fillText("Press Spacebar to play", 295, 275);
     }
 
     @Override
     public void draw() {
 
-        // Every time the scene redraws;
-        showWelcomeMessage();
+        // In case there is any pending keys
+        activeKeys.clear();
+
+        // Repeats the code many times/second
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                // Black background
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+                showWelcomeMessage();
+
+                if (activeKeys.contains(KeyCode.SPACE)) {
+                    this.stop();
+                    FruitPicker.setScene(FruitPicker.GAME_SCENE);
+                } else if (activeKeys.contains(KeyCode.ESCAPE)) {
+                    this.stop();
+                    FruitPicker.exit();
+                }
+            }
+        };
+
+        animationTimer.start();
     }
 }
+

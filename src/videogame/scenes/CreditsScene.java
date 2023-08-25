@@ -1,8 +1,11 @@
 package videogame.scenes;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import videogame.FruitPicker;
 
 public class CreditsScene extends GeneralScene {
 
@@ -28,7 +31,26 @@ public class CreditsScene extends GeneralScene {
     @Override
     public void draw() {
 
-        // Every time the scene redraws;
-        showCreditsMessage();
+        // In case there is any pending keys
+        activeKeys.clear();
+
+        // Repeats the code many times/second
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                // Black background
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+                showCreditsMessage();
+
+                if (activeKeys.contains(KeyCode.SPACE)) {
+                    this.stop();
+                    FruitPicker.setScene(FruitPicker.WELCOME_SCENE);
+                }
+            }
+        };
+
+        animationTimer.start();
     }
 }
