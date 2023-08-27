@@ -6,7 +6,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.lang.reflect.Member;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +22,8 @@ public abstract class GeneralScene extends Scene {
     private StackPane root = new StackPane();
     protected Set<KeyCode> activeKeys;
     protected Set<KeyCode> releasedKeys;
+    protected MediaPlayer mediaPlayer;
+    protected Media sound;
 
     // Objects that permits to draw different elements inside the canvas
     protected GraphicsContext gc;

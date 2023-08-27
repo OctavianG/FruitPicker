@@ -2,22 +2,31 @@ package videogame.scenes;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import videogame.sprites.Fruit;
 import videogame.FruitPicker;
 import javafx.scene.image.Image;
+import videogame.sprites.Fruit;
 import videogame.sprites.MainCharacter;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class GameScene extends GeneralScene {
 
     private static final String BACKGROUND_IMAGE = "assets/background.png";
+    private static final String BACKGROUND_SONG = "assets/autumn-leaves.wav";
 
     private Image background;
     private MainCharacter bear;
+    private Fruit fruit = null;
+    private MediaPlayer mediaPlayerEffects;
+    private Media effect;
 
     public GameScene() {
 
@@ -43,11 +52,19 @@ public class GameScene extends GeneralScene {
     @Override
     public void draw() {
 
-        // In case there is any pending keys
+        // Initializing sound
+        // To play - need to add configuration file for player - see module-info.java
+        sound = new Media(new File(BACKGROUND_SONG).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+
+        // In case there is any pending key
         activeKeys.clear();
 
         // placing the bear on the ground and center
         bear.moveTo(380, 375);
+
 
         // Repeats the code many times/second
         AnimationTimer animationTimer = new AnimationTimer() {
@@ -60,6 +77,10 @@ public class GameScene extends GeneralScene {
                 gc.drawImage(background, 0, 0); // top left corner
                 // image, image position, image size, x and y in the scene, scale dimensions;
                bear.draw(gc);
+               //fruit
+                if (fruit != null) {
+                    fruit.draw(gc);
+                }
 
                 if (activeKeys.contains(KeyCode.ESCAPE)) {
                     this.stop();
@@ -72,9 +93,29 @@ public class GameScene extends GeneralScene {
                 } else if (activeKeys.contains(KeyCode.RIGHT)) {
                     bear.move(MainCharacter.RIGHT);
                 }
+
+                // Generate or move fruit
+                if (fruit == null) {
+                    fruit = new Fruit();
+                    fruit.moveTo((int)(Math.random() * (GeneralScene.GAME_WIDTH - Fruit.FRUIT_WIDTH)), 0);
+                } else {
+                    fruit.move();
+                    if (fruit.colidesWith(bear)) {
+                        fruit = null;
+                    } else if (fruit.getY() > GeneralScene.GAME_HEIGHT) {
+                        fruit = null;
+                    }
+                }
             }
         };
 
         animationTimer.start();
+    }
+
+    public void playEffect(String path) {
+
+        effect = new Media(new File(path).toURI().toString());
+        mediaPlayerEffects = new MediaPlayer(effect);
+        mediaPlayerEffects.play();
     }
 }
