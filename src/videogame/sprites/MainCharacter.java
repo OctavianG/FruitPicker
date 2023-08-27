@@ -47,4 +47,10 @@ public class MainCharacter extends AnimatedSprite {
         moveTo(newX, y);
         animate(movement);
     }
+
+    public void resetPosition() {
+
+        moveTo(GeneralScene.GAME_WIDTH / 2 - MAIN_CHARACTER_WIDTH / 2,
+                GeneralScene.GAME_HEIGHT - 30 - MAIN_CHARACTER_HEIGHT);
+    }
 }

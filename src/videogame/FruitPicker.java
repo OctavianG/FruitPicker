@@ -47,6 +47,7 @@ public class FruitPicker extends Application {
     }
 
     public static void main(String[] args) {
+
         launch(args);
     }
 }

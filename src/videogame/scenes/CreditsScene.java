@@ -24,6 +24,8 @@ public class CreditsScene extends GeneralScene {
 
         myFont = Font.font("Arial", FontWeight.NORMAL, 20);
         gc.setFont(myFont);
+        gc.setFill(Color.YELLOW);
+        gc.fillText("Your score: " + GameScene.points, 340, 225);
         gc.setFill(Color.WHITE);
         gc.fillText("Press Spacebar to go back to Welcome Scene", 200, 275);
     }

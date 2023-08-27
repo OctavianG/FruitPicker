@@ -11,6 +11,7 @@ public class Fruit extends Sprite {
     public static final  int MAX_FRUITS = 5;
     public static final  int FRUIT_WIDTH = 30;
     public static final  int FRUIT_HEIGHT = 30;
+    public static float STEP_INCREMENT = 0f;
 
     public Fruit() {
 
@@ -58,8 +59,15 @@ public class Fruit extends Sprite {
 
     public void move() {
 
-        this.y++;
+        this.y += (int) (1 + STEP_INCREMENT);
     }
+
+    public void increaseDifficulty() {
+
+        STEP_INCREMENT += 0.1f;
+    }
+
+
 
 
 
