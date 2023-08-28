@@ -101,15 +101,13 @@ public class GameScene extends GeneralScene {
 
                 gc.drawImage(background, 0, 0); // top left corner
 
-
                 // image, image position, image size, x and y in the scene, scale dimensions;
                 bear.draw(gc);
-
-
 
                 // HUD draw
                 updateHud();
 
+                // Lives draw
                 updateLives();
 
                 //fruit
@@ -193,13 +191,10 @@ public class GameScene extends GeneralScene {
     }
 
     private void updateHud() {
-        Font myFont = Font.font("Arial", FontWeight.NORMAL, 18);
+        Font myFont = Font.font("Arial", FontWeight.BOLD, 18);
         gc.setFont(myFont);
-        gc.setFill(Color.BLUE);
-        gc.fillText("Score: " + points, 20, GeneralScene.GAME_HEIGHT - 15);
-
-        gc.setFill(Color.YELLOW);
-        gc.fillText("Lives: " + lives, GeneralScene.GAME_WIDTH - 100, GeneralScene.GAME_HEIGHT - 15);
+        gc.setFill(Color.BLACK);
+        gc.fillText("Score: " + points, 20, 25);
     }
 
     public void updateLives() {
