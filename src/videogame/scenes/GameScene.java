@@ -20,27 +20,42 @@ import java.nio.file.Paths;
 
 public class GameScene extends GeneralScene {
 
-    private static final String BACKGROUND_IMAGE = "assets/background.png";
+    private static final String BACKGROUND_IMAGE = "assets/image_BACKGROUND.png";
     private static final String BACKGROUND_SONG = "assets/autumn-leaves.wav";
     public static final String SOUND_EFFECT = "assets/quick-jump.wav";
     public static final String SOUND_EFFECT_ROCK = "assets/rock-destroy.mp3";
+    public static final String H0 = "assets/0.png";
+    public static final String H1 = "assets/1.png";
+    public static final String H2 = "assets/2.png";
+    public static final String H3 = "assets/3.png";
+    public static final String H4 = "assets/4.png";
 
     private Image background;
+    private Image fullLives;
+    private Image threeLives;
+    private Image twoLives;
+    private Image oneLives;
+    private Image zeroLives;
     private MainCharacter bear;
     private Fruit fruit = null;
     private Rock rock = null;
     private MediaPlayer mediaPlayerEffects;
     private Media effect;
     private MediaPlayer MediaPlayerEffectsRock;
-    private  Media effectRock;
-    public static  int points = 0;
-    private int lives = 3;
+    private Media effectRock;
+    public static int points = 0;
+    private int lives = 4;
 
     public GameScene() {
 
         super();
         try {
             background = new Image(Files.newInputStream(Paths.get(BACKGROUND_IMAGE)));
+            fullLives = new Image(Files.newInputStream(Paths.get(H4)));
+            threeLives = new Image(Files.newInputStream(Paths.get(H3)));
+            twoLives = new Image(Files.newInputStream(Paths.get(H2)));
+            oneLives = new Image(Files.newInputStream(Paths.get(H1)));
+            zeroLives = new Image(Files.newInputStream(Paths.get(H0)));
             bear = new MainCharacter();
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,13 +101,18 @@ public class GameScene extends GeneralScene {
 
                 gc.drawImage(background, 0, 0); // top left corner
 
-                // image, image position, image size, x and y in the scene, scale dimensions;
-               bear.draw(gc);
 
-               // HUD draw
+                // image, image position, image size, x and y in the scene, scale dimensions;
+                bear.draw(gc);
+
+
+
+                // HUD draw
                 updateHud();
 
-               //fruit
+                updateLives();
+
+                //fruit
                 if (fruit != null) {
                     fruit.draw(gc);
                 }
@@ -117,7 +137,7 @@ public class GameScene extends GeneralScene {
                 // Generate or move fruit
                 if (fruit == null) {
                     fruit = new Fruit();
-                    fruit.moveTo((int)(Math.random() * (GeneralScene.GAME_WIDTH - Fruit.FRUIT_WIDTH)), 0);
+                    fruit.moveTo((int) (Math.random() * (GeneralScene.GAME_WIDTH - Fruit.FRUIT_WIDTH)), 0);
                 } else {
                     fruit.move();
                     if (fruit.colidesWith(bear)) {
@@ -140,7 +160,7 @@ public class GameScene extends GeneralScene {
                 // Generate or move rock
                 if (rock == null) {
                     rock = new Rock();
-                    rock.moveTo((int)(Math.random() * (GeneralScene.GAME_WIDTH - Rock.ROCK_WIDTH)), 0);
+                    rock.moveTo((int) (Math.random() * (GeneralScene.GAME_WIDTH - Rock.ROCK_WIDTH)), 0);
                 } else {
                     rock.move();
                     if (rock.colidesWith(bear)) {
@@ -167,7 +187,7 @@ public class GameScene extends GeneralScene {
     private void reset() {
 
         bear.resetPosition();
-        lives = 3;
+        lives = 4;
         points = 0;
         Fruit.STEP_INCREMENT = 0f;
     }
@@ -180,5 +200,39 @@ public class GameScene extends GeneralScene {
 
         gc.setFill(Color.YELLOW);
         gc.fillText("Lives: " + lives, GeneralScene.GAME_WIDTH - 100, GeneralScene.GAME_HEIGHT - 15);
+    }
+
+    public void updateLives() {
+
+        switch (this.lives) {
+            case 1:
+                try {
+                    gc.drawImage(oneLives, 750, 10);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:
+                try {
+                    gc.drawImage(twoLives, 750, 10);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 3:
+                try {
+                    gc.drawImage(threeLives, 750, 10);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 4:
+                try {
+                    gc.drawImage(fullLives, 750, 10);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 }
